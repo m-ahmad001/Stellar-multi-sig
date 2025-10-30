@@ -1,0 +1,960 @@
+.App {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.App-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.App-header h1 {
+  color: #646cff;
+  margin-bottom: 1rem;
+}
+
+/* Wallet Connect Styles */
+.wallet-connect {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border: 1px solid #e9ecef;
+}
+
+.wallet-status {
+  text-align: center;
+}
+
+.connected {
+  color: #28a745;
+}
+
+.disconnected {
+  color: #6c757d;
+}
+
+.connect-btn, .disconnect-btn {
+  background: #646cff;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-top: 1rem;
+  transition: background-color 0.3s;
+}
+
+.connect-btn:hover, .disconnect-btn:hover {
+  background: #5a5fcf;
+}
+
+.disconnect-btn {
+  background: #dc3545;
+}
+
+.disconnect-btn:hover {
+  background: #c82333;
+}
+
+.error-message {
+  background: #f8d7da;
+  color: #721c24;
+  padding: 1rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  border: 1px solid #f5c6cb;
+}
+
+.success-message {
+  background: #d4edda;
+  color: #155724;
+  padding: 1rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  border: 1px solid #c3e6cb;
+}
+
+.loading {
+  color: #6c757d;
+  font-style: italic;
+}
+
+/* Transaction Styles */
+.transactions-container {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 2rem;
+  border: 1px solid #e9ecef;
+}
+
+.transactions-container h2 {
+  color: #495057;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.transaction-form {
+  background: #f8f9fa;
+  border-radius: 6px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border: 1px solid #e9ecef;
+}
+
+.transaction-form h3 {
+  color: #495057;
+  margin-bottom: 1rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #495057;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #646cff;
+  box-shadow: 0 0 0 2px rgba(100, 108, 255, 0.25);
+}
+
+.transaction-form button {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.transaction-form button:hover:not(:disabled) {
+  background: #218838;
+}
+
+.transaction-form button:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+}
+/* Account Info Styles */
+.account-info {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border: 1px solid #e9ecef;
+}
+
+.account-info h3 {
+  color: #495057;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.account-details {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.account-field {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #f8f9fa;
+}
+
+.account-field:last-child {
+  border-bottom: none;
+}
+
+.account-field strong {
+  color: #495057;
+  min-width: 140px;
+}
+
+.public-key {
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  background: #f8f9fa;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  word-break: break-all;
+}
+
+.network {
+  background: #28a745;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.balances-section {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 2px solid #f8f9fa;
+}
+
+.balances-section h4 {
+  color: #495057;
+  margin-bottom: 1rem;
+}
+
+.balances-list {
+  background: #f8f9fa;
+  border-radius: 6px;
+  padding: 1rem;
+}
+
+.balance-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.balance-item:last-child {
+  border-bottom: none;
+}
+
+.balance-item .asset {
+  font-weight: 500;
+  color: #495057;
+}
+
+.balance-item .amount {
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  color: #28a745;
+}
+
+.refresh-btn {
+  background: #17a2b8;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-top: 1.5rem;
+  width: 100%;
+  transition: background-color 0.3s;
+}
+
+.refresh-btn:hover {
+  background: #138496;
+}
+
+.friendbot-link {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.friendbot-link:hover {
+  text-decoration: underline;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .account-field {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .balance-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+}/* Contra
+ct Example Styles */
+.contract-example {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border: 1px solid #e9ecef;
+}
+
+.contract-example h2 {
+  color: #495057;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.network-info {
+  text-align: center;
+  color: #6c757d;
+  font-style: italic;
+  margin-bottom: 2rem;
+}
+
+.contract-form {
+  background: #f8f9fa;
+  border-radius: 6px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border: 1px solid #e9ecef;
+}
+
+.contract-form h3 {
+  color: #495057;
+  margin-bottom: 0.5rem;
+}
+
+.contract-description {
+  color: #6c757d;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+  font-style: italic;
+}
+
+.contract-form button {
+  background: #6f42c1;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.contract-form button:hover:not(:disabled) {
+  background: #5a32a3;
+}
+
+.contract-form button:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+}/* Simpl
+e Contract Example Styles */
+.contract-info {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 2px solid #f8f9fa;
+}
+
+.contract-info h4, .contract-info h5 {
+  color: #495057;
+  margin-bottom: 1rem;
+}
+
+.example-contracts {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.example-contract {
+  background: #e9ecef;
+  padding: 1rem;
+  border-radius: 6px;
+  border-left: 4px solid #6f42c1;
+}
+
+.example-contract strong {
+  color: #495057;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.example-contract code {
+  background: #f8f9fa;
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+  font-family: 'Courier New', monospace;
+  color: #6f42c1;
+}
+
+.contract-notes {
+  background: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 6px;
+  padding: 1rem;
+}
+
+.contract-notes ul {
+  margin: 0.5rem 0 0 1.5rem;
+  color: #856404;
+}
+
+.contract-notes li {
+  margin-bottom: 0.5rem;
+}
+
+.form-group small {
+  display: block;
+  color: #6c757d;
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+  font-style: italic;
+}/* Modern
+ Contract Example Styles */
+.form-description {
+  color: #6c757d;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  font-style: italic;
+}
+
+.success-message pre {
+  background: #f8f9fa;
+  padding: 1rem;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  margin: 0;
+}
+
+.contract-form h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.contract-notes h5 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.contract-notes ul li strong {
+  color: #495057;
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+  .example-contracts {
+    grid-template-columns: 1fr;
+  }
+  
+  .contract-form {
+    padding: 1rem;
+  }
+}/* Mu
+lti-Signature Manager Styles */
+.multisig-manager {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border: 1px solid #e9ecef;
+}
+
+.multisig-manager h2 {
+  color: #495057;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.multisig-manager .description {
+  text-align: center;
+  color: #6c757d;
+  margin-bottom: 2rem;
+  font-style: italic;
+}
+
+.multisig-form {
+  background: #f8f9fa;
+  border-radius: 6px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border: 1px solid #e9ecef;
+}
+
+.multisig-form h3 {
+  color: #495057;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.signers-section {
+  margin-bottom: 1rem;
+}
+
+.signer-input {
+  margin-bottom: 0.5rem;
+}
+
+.signer-input input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.thresholds-section {
+  margin-bottom: 1.5rem;
+}
+
+.thresholds-section h4 {
+  color: #495057;
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+}
+
+.threshold-inputs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.threshold-input {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.threshold-input label {
+  font-weight: 500;
+  color: #495057;
+  font-size: 0.9rem;
+}
+
+.threshold-input input {
+  padding: 0.5rem;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.input-with-button {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.input-with-button input {
+  flex: 1;
+}
+
+.input-with-button button {
+  background: #17a2b8;
+  color: white;
+  border: none;
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.input-with-button button:hover:not(:disabled) {
+  background: #138496;
+}
+
+.account-info-display {
+  background: #e7f3ff;
+  border: 1px solid #b3d9ff;
+  border-radius: 6px;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.account-info-display h4 {
+  color: #0056b3;
+  margin-bottom: 0.75rem;
+}
+
+.account-info-display p {
+  margin: 0.25rem 0;
+  color: #495057;
+}
+
+.signers-list {
+  margin-top: 0.75rem;
+}
+
+.signer-item {
+  background: #f8f9fa;
+  padding: 0.5rem;
+  margin: 0.25rem 0;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  color: #495057;
+}
+
+.signature-status {
+  background: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 6px;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+.signature-status p {
+  margin: 0.25rem 0;
+  color: #856404;
+  font-weight: 500;
+}
+
+.signing-buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.signing-buttons button {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.signing-buttons button:hover:not(:disabled) {
+  background: #218838;
+}
+
+.signing-buttons .submit-btn {
+  background: #dc3545;
+}
+
+.signing-buttons .submit-btn:hover:not(:disabled) {
+  background: #c82333;
+}
+
+.multisig-info {
+  background: #f8f9fa;
+  border-radius: 6px;
+  padding: 1.5rem;
+  border-left: 4px solid #6f42c1;
+}
+
+.multisig-info h4 {
+  color: #495057;
+  margin-bottom: 1rem;
+}
+
+.multisig-info ol, .multisig-info ul {
+  color: #495057;
+  line-height: 1.6;
+}
+
+.multisig-info li {
+  margin-bottom: 0.5rem;
+}
+
+.multisig-info strong {
+  color: #6f42c1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .threshold-inputs {
+    grid-template-columns: 1fr;
+  }
+  
+  .input-with-button {
+    flex-direction: column;
+  }
+  
+  .signing-buttons {
+    flex-direction: column;
+  }
+  
+  .multisig-form {
+    padding: 1rem;
+  }
+}/* Keypai
+r Generator Styles */
+.keypair-generator {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border: 1px solid #e9ecef;
+}
+
+.keypair-generator h3 {
+  color: #495057;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.keypair-generator .description {
+  text-align: center;
+  color: #6c757d;
+  margin-bottom: 1.5rem;
+  font-style: italic;
+}
+
+.generator-controls {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.generate-btn {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.generate-btn:hover:not(:disabled) {
+  background: #0056b3;
+}
+
+.clear-btn {
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.clear-btn:hover {
+  background: #545b62;
+}
+
+.keypairs-list {
+  margin-top: 2rem;
+}
+
+.keypairs-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.keypairs-header h4 {
+  color: #495057;
+  margin-bottom: 0.5rem;
+}
+
+.warning {
+  color: #dc3545;
+  font-weight: 500;
+  background: #f8d7da;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  border: 1px solid #f5c6cb;
+}
+
+.keypair-item {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.keypair-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.keypair-header h5 {
+  color: #495057;
+  margin: 0;
+}
+
+.fund-btn {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s;
+}
+
+.fund-btn:hover {
+  background: #218838;
+}
+
+.keypair-field {
+  margin-bottom: 1rem;
+}
+
+.keypair-field label {
+  display: block;
+  font-weight: 500;
+  color: #495057;
+  margin-bottom: 0.5rem;
+}
+
+.key-display {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.key-display code {
+  flex: 1;
+  background: #ffffff;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  padding: 0.75rem;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  word-break: break-all;
+  color: #495057;
+}
+
+.secret-key {
+  background: #fff3cd !important;
+  border-color: #ffeaa7 !important;
+  color: #856404 !important;
+}
+
+.copy-btn {
+  background: #17a2b8;
+  color: white;
+  border: none;
+  padding: 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s;
+  white-space: nowrap;
+}
+
+.copy-btn:hover {
+  background: #138496;
+}
+
+.bulk-actions {
+  background: #e7f3ff;
+  border: 1px solid #b3d9ff;
+  border-radius: 6px;
+  padding: 1.5rem;
+  margin-top: 2rem;
+}
+
+.bulk-actions h5 {
+  color: #0056b3;
+  margin-bottom: 1rem;
+}
+
+.bulk-copy-section {
+  margin-top: 1rem;
+}
+
+.bulk-copy-section label {
+  display: block;
+  font-weight: 500;
+  color: #495057;
+  margin-bottom: 0.5rem;
+}
+
+.bulk-textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.8rem;
+  resize: vertical;
+  box-sizing: border-box;
+  margin-bottom: 0.5rem;
+}
+
+.generator-info {
+  background: #f8f9fa;
+  border-radius: 6px;
+  padding: 1.5rem;
+  margin-top: 2rem;
+  border-left: 4px solid #007bff;
+}
+
+.generator-info h5 {
+  color: #495057;
+  margin-bottom: 1rem;
+}
+
+.generator-info ol {
+  color: #495057;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.generator-info li {
+  margin-bottom: 0.5rem;
+}
+
+.security-note {
+  background: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 4px;
+  padding: 1rem;
+}
+
+.security-note h5 {
+  color: #856404;
+  margin-bottom: 0.5rem;
+}
+
+.security-note p {
+  color: #856404;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .generator-controls {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .keypair-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  
+  .key-display {
+    flex-direction: column;
+  }
+  
+  .key-display code {
+    word-break: break-all;
+  }
+}
