@@ -35,7 +35,8 @@
   color: #6c757d;
 }
 
-.connect-btn, .disconnect-btn {
+.connect-btn,
+.disconnect-btn {
   background: #646cff;
   color: white;
   border: none;
@@ -47,7 +48,8 @@
   transition: background-color 0.3s;
 }
 
-.connect-btn:hover, .disconnect-btn:hover {
+.connect-btn:hover,
+.disconnect-btn:hover {
   background: #5a5fcf;
 }
 
@@ -194,7 +196,7 @@
 }
 
 .public-key {
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
   font-size: 0.9rem;
   background: #f8f9fa;
   padding: 0.25rem 0.5rem;
@@ -246,7 +248,7 @@
 }
 
 .balance-item .amount {
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
   font-weight: bold;
   color: #28a745;
 }
@@ -285,13 +287,13 @@
     align-items: flex-start;
     gap: 0.5rem;
   }
-  
+
   .balance-item {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.25rem;
   }
-}/* Contra
+} /* Contra
 ct Example Styles */
 .contract-example {
   background: #ffffff;
@@ -352,7 +354,7 @@ ct Example Styles */
 .contract-form button:disabled {
   background: #6c757d;
   cursor: not-allowed;
-}/* Simpl
+} /* Simpl
 e Contract Example Styles */
 .contract-info {
   margin-top: 2rem;
@@ -360,7 +362,8 @@ e Contract Example Styles */
   border-top: 2px solid #f8f9fa;
 }
 
-.contract-info h4, .contract-info h5 {
+.contract-info h4,
+.contract-info h5 {
   color: #495057;
   margin-bottom: 1rem;
 }
@@ -388,7 +391,7 @@ e Contract Example Styles */
   background: #f8f9fa;
   padding: 0.2rem 0.4rem;
   border-radius: 3px;
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
   color: #6f42c1;
 }
 
@@ -414,7 +417,7 @@ e Contract Example Styles */
   font-size: 0.8rem;
   margin-top: 0.25rem;
   font-style: italic;
-}/* Modern
+} /* Modern
  Contract Example Styles */
 .form-description {
   color: #6c757d;
@@ -427,7 +430,7 @@ e Contract Example Styles */
   background: #f8f9fa;
   padding: 1rem;
   border-radius: 4px;
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
   font-size: 0.9rem;
   white-space: pre-wrap;
   word-wrap: break-word;
@@ -454,11 +457,11 @@ e Contract Example Styles */
   .example-contracts {
     grid-template-columns: 1fr;
   }
-  
+
   .contract-form {
     padding: 1rem;
   }
-}/* Mu
+} /* Mu
 lti-Signature Manager Styles */
 .multisig-manager {
   background: #ffffff;
@@ -600,7 +603,7 @@ lti-Signature Manager Styles */
   padding: 0.5rem;
   margin: 0.25rem 0;
   border-radius: 4px;
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
   font-size: 0.9rem;
   color: #495057;
 }
@@ -660,7 +663,8 @@ lti-Signature Manager Styles */
   margin-bottom: 1rem;
 }
 
-.multisig-info ol, .multisig-info ul {
+.multisig-info ol,
+.multisig-info ul {
   color: #495057;
   line-height: 1.6;
 }
@@ -678,19 +682,19 @@ lti-Signature Manager Styles */
   .threshold-inputs {
     grid-template-columns: 1fr;
   }
-  
+
   .input-with-button {
     flex-direction: column;
   }
-  
+
   .signing-buttons {
     flex-direction: column;
   }
-  
+
   .multisig-form {
     padding: 1rem;
   }
-}/* Keypai
+} /* Keypai
 r Generator Styles */
 .keypair-generator {
   background: #ffffff;
@@ -832,7 +836,7 @@ r Generator Styles */
   border: 1px solid #ced4da;
   border-radius: 4px;
   padding: 0.75rem;
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
   font-size: 0.9rem;
   word-break: break-all;
   color: #495057;
@@ -889,7 +893,7 @@ r Generator Styles */
   padding: 0.75rem;
   border: 1px solid #ced4da;
   border-radius: 4px;
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
   font-size: 0.8rem;
   resize: vertical;
   box-sizing: border-box;
@@ -943,18 +947,515 @@ r Generator Styles */
     flex-direction: column;
     align-items: center;
   }
-  
+
   .keypair-header {
     flex-direction: column;
     gap: 1rem;
     align-items: flex-start;
   }
-  
+
   .key-display {
     flex-direction: column;
   }
-  
+
   .key-display code {
     word-break: break-all;
+  }
+} /* Pure Mu
+lti-Sig Contract Styles */
+.pure-multisig-contract {
+  background: #f0f8ff;
+  border: 2px solid #4169e1;
+  border-radius: 8px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.pure-multisig-contract h2 {
+  color: #1e3a8a;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.pure-multisig-contract .description {
+  text-align: center;
+  color: #3b82f6;
+  margin-bottom: 2rem;
+  font-style: italic;
+  font-weight: 500;
+}
+
+.signing-section {
+  background: #e0f2fe;
+  border: 1px solid #0284c7;
+  border-radius: 6px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.signing-section h3 {
+  color: #0c4a6e;
+  margin-bottom: 1rem;
+}
+
+.transaction-info {
+  background: #ffffff;
+  border-radius: 4px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid #bae6fd;
+}
+
+.transaction-info p {
+  margin: 0.5rem 0;
+  color: #0c4a6e;
+}
+
+.transaction-info strong {
+  color: #1e40af;
+}
+
+.signing-controls {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.sign-btn {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.sign-btn:hover:not(:disabled) {
+  background: #2563eb;
+}
+
+.sign-btn:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+.submit-btn {
+  background: #dc2626;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.submit-btn:hover:not(:disabled) {
+  background: #b91c1c;
+}
+
+.submit-btn:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+.xdr-display {
+  margin-top: 1rem;
+}
+
+.xdr-display h4 {
+  color: #0c4a6e;
+  margin-bottom: 0.5rem;
+}
+
+.xdr-textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #bae6fd;
+  border-radius: 4px;
+  font-family: "Courier New", monospace;
+  font-size: 0.8rem;
+  background: #f8fafc;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.info-section {
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 1.5rem;
+  margin-top: 2rem;
+}
+
+.info-section h4 {
+  color: #334155;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.info-section ol,
+.info-section ul {
+  color: #475569;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.info-section li {
+  margin-bottom: 0.5rem;
+}
+
+.info-section strong {
+  color: #1e293b;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .signing-controls {
+    flex-direction: column;
+  }
+
+  .pure-multisig-contract {
+    padding: 1rem;
+  }
+}
+
+/* Test Section Styles */
+.test-section {
+  background: #fef3c7;
+  border: 1px solid #f59e0b;
+  border-radius: 6px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.test-section h3 {
+  color: #92400e;
+  margin-bottom: 1rem;
+}
+
+.test-btn {
+  background: #f59e0b;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.test-btn:hover:not(:disabled) {
+  background: #d97706;
+}
+
+.test-btn:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+} /* Backe
+nd Multi-Sig Contract Styles */
+.backend-multisig-contract {
+  background: #f0fff4;
+  border: 2px solid #22c55e;
+  border-radius: 8px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.backend-multisig-contract h2 {
+  color: #15803d;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.backend-multisig-contract .description {
+  text-align: center;
+  color: #16a34a;
+  margin-bottom: 2rem;
+  font-style: italic;
+  font-weight: 500;
+}
+
+.info-btn {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s;
+  white-space: nowrap;
+}
+
+.info-btn:hover:not(:disabled) {
+  background: #2563eb;
+}
+
+.info-btn:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+/* Backend-specific info section */
+.backend-multisig-contract .info-section {
+  background: #ecfdf5;
+  border: 1px solid #22c55e;
+  border-radius: 6px;
+  padding: 1.5rem;
+  margin-top: 2rem;
+}
+
+.backend-multisig-contract .info-section h4 {
+  color: #15803d;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.backend-multisig-contract .info-section code {
+  background: #dcfce7;
+  color: #166534;
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+  font-family: "Courier New", monospace;
+}
+
+.backend-multisig-contract .info-section ul,
+.backend-multisig-contract .info-section ol {
+  color: #166534;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.backend-multisig-contract .info-section li {
+  margin-bottom: 0.5rem;
+}
+
+.backend-multisig-contract .info-section strong {
+  color: #15803d;
+}
+
+/* Dynamic Contract Call Styles */
+.dynamic-contract-call {
+  background: #f8f4ff;
+  border: 2px solid #a855f7;
+  border-radius: 8px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.dynamic-contract-call h2 {
+  color: #6b21a8;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.dynamic-contract-call .description {
+  text-align: center;
+  color: #9333ea;
+  margin-bottom: 2rem;
+  font-style: italic;
+  font-weight: 500;
+}
+
+.dynamic-contract-call .contract-form {
+  background: #f3e8ff;
+  border: 1px solid #d8b4fe;
+  border-radius: 6px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.dynamic-contract-call .contract-form h3 {
+  color: #6b21a8;
+  margin-bottom: 1rem;
+}
+
+.dynamic-contract-call .contract-form button {
+  background: #a855f7;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.dynamic-contract-call .contract-form button:hover:not(:disabled) {
+  background: #9333ea;
+}
+
+.dynamic-contract-call .contract-form button:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+.dynamic-contract-call .signing-section {
+  background: #ede9fe;
+  border: 1px solid #c4b5fd;
+  border-radius: 6px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.dynamic-contract-call .signing-section h3 {
+  color: #6b21a8;
+  margin-bottom: 1rem;
+}
+
+.dynamic-contract-call .transaction-info {
+  background: #ffffff;
+  border-radius: 4px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ddd6fe;
+}
+
+.dynamic-contract-call .transaction-info p {
+  margin: 0.5rem 0;
+  color: #6b21a8;
+}
+
+.dynamic-contract-call .transaction-info strong {
+  color: #7c3aed;
+}
+
+.dynamic-contract-call .transaction-xdr {
+  margin: 1rem 0;
+  padding: 1rem;
+  background: #fafaf9;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+}
+
+.dynamic-contract-call .transaction-xdr textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd6fe;
+  border-radius: 4px;
+  font-family: "Courier New", monospace;
+  font-size: 0.75rem;
+  background: #ffffff;
+  resize: vertical;
+  box-sizing: border-box;
+  color: #374151;
+}
+
+.dynamic-contract-call .signing-controls {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.dynamic-contract-call .sign-btn {
+  background: #a855f7;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.dynamic-contract-call .sign-btn:hover:not(:disabled) {
+  background: #9333ea;
+}
+
+.dynamic-contract-call .sign-btn:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+.dynamic-contract-call .submit-btn {
+  background: #7c3aed;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.dynamic-contract-call .submit-btn:hover:not(:disabled) {
+  background: #6d28d9;
+}
+
+.dynamic-contract-call .submit-btn:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+.dynamic-contract-call .info-section {
+  background: #f3e8ff;
+  border: 1px solid #e9d5ff;
+  border-radius: 6px;
+  padding: 1.5rem;
+  margin-top: 2rem;
+}
+
+.dynamic-contract-call .info-section h4 {
+  color: #6b21a8;
+  margin-bottom: 1rem;
+}
+
+.dynamic-contract-call .info-section ul,
+.dynamic-contract-call .info-section ol {
+  color: #581c87;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.dynamic-contract-call .info-section li {
+  margin-bottom: 0.5rem;
+}
+
+.dynamic-contract-call .info-section strong {
+  color: #6b21a8;
+}
+
+.dynamic-contract-call .info-section code {
+  background: #ede9fe;
+  color: #6b21a8;
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+  font-family: "Courier New", monospace;
+}
+
+.dynamic-contract-call .info-section p code {
+  background: #ffffff;
+  border: 1px solid #ddd6fe;
+  padding: 0.4rem 0.6rem;
+  display: inline-block;
+  margin: 0 2px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .dynamic-contract-call {
+    padding: 1rem;
+  }
+
+  .dynamic-contract-call .contract-form {
+    padding: 1rem;
+  }
+
+  .dynamic-contract-call .signing-controls {
+    flex-direction: column;
+  }
+
+  .dynamic-contract-call .signing-section {
+    padding: 1rem;
   }
 }

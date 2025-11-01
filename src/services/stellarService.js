@@ -1,17 +1,18 @@
 import { signTransaction } from '@stellar/freighter-api';
 import * as StellarSdk from '@stellar/stellar-sdk';
+import { Server } from '@stellar/stellar-sdk/rpc';
 
 class StellarService {
     constructor(networkType = 'testnet') {
         this.networkType = networkType;
 
         if (networkType === 'mainnet' || networkType === 'PUBLIC') {
-            this.server = new StellarSdk.Horizon.Server('https://horizon-testnet.stellar.org');
+            this.server = new Server("https://soroban-testnet.stellar.org")
             this.rpc = new StellarSdk.Horizon.Server('https://horizon-testnet.stellar.org');
             this.networkPassphrase = StellarSdk.Networks.PUBLIC;
             this.networkName = 'PUBLIC';
         } else {
-            this.server = new StellarSdk.Horizon.Server('https://horizon-testnet.stellar.org');
+            this.server = new Server("https://soroban-testnet.stellar.org")
             this.rpc = new StellarSdk.Horizon.Server('https://horizon-testnet.stellar.org');
             this.networkPassphrase = StellarSdk.Networks.TESTNET;
             this.networkName = 'TESTNET';
@@ -26,7 +27,7 @@ class StellarService {
                 return await this.rpc.getAccount(publicKey);
             } catch (rpcError) {
                 // Fallback to Horizon server
-                return await this.server.loadAccount(publicKey);
+                return await this.rpc.loadAccount(publicKey);
             }
         } catch (error) {
             console.error('Error loading account:', error);
@@ -119,30 +120,27 @@ class StellarService {
     async invokeContract(sourcePublicKey, contractAddress, method, params = []) {
         try {
             // Get account from RPC server
-            const sourceAccount = await this.rpc.accounts(sourcePublicKey);
+            const sourceAccount = await this.server.getAccount(sourcePublicKey);
+            console.log("🚀 ~ StellarService ~ invokeContract ~ sourceAccount:", sourceAccount)
             const contract = new StellarSdk.Contract(contractAddress);
 
-            // Convert parameters to ScVal format
+            // Convert params properly
             const scValParams = params.map(param => {
-                if (typeof param === 'string') {
-                    return StellarSdk.nativeToScVal(param, { type: 'string' });
-                } else if (typeof param === 'number') {
-                    return StellarSdk.nativeToScVal(param, { type: 'u32' });
-                } else if (typeof param === 'bigint') {
-                    return StellarSdk.nativeToScVal(param, { type: 'i128' });
-                } else if (typeof param === 'boolean') {
-                    return StellarSdk.nativeToScVal(param, { type: 'bool' });
-                } else {
-                    // Try to handle as address if it looks like one
-                    if (typeof param === 'string' && param.startsWith('G')) {
-                        return StellarSdk.Address.fromString(param).toScVal();
-                    }
-                    return StellarSdk.nativeToScVal(param);
+                if (typeof param === "string" && param.startsWith("G")) {
+                    return StellarSdk.Address.fromString(param).toScVal();
                 }
+                if (typeof param === "bigint" || typeof param === "number") {
+                    return nativeToScVal(BigInt(param), { type: "i128" });
+                }
+                return nativeToScVal(param);
             });
+            console.log("🚀 ~ StellarService  ~ scValParams:", scValParams)
 
             // Build the contract call operation
-            const operation = contract.call(method, ...scValParams);
+            const operation = contract.call(
+                'set_name',
+                ...scValParams
+            );
 
             const transaction = new StellarSdk.TransactionBuilder(sourceAccount, {
                 fee: StellarSdk.BASE_FEE,
@@ -151,12 +149,74 @@ class StellarService {
                 .addOperation(operation)
                 .setTimeout(300)
                 .build();
+            console.log("🚀 ~ StellarService ~ invokeContract ~ transaction:", transaction)
 
             // Prepare transaction (this handles simulation and auth)
-            const preparedTransaction = await this.rpc.prepareTransaction(transaction);
+            const preparedTransaction = await this.server.prepareTransaction(transaction);
+            console.log("🚀 ~ StellarService ~ invokeContract ~ preparedTransaction:", preparedTransaction)
 
             return preparedTransaction;
         } catch (error) {
+            // Enhanced error handling for contract preparation
+            if (error.response && error.response.data) {
+                const errorData = error.response.data;
+                console.error('Stellar error response:', errorData);
+
+                // Handle simulation errors
+                if (errorData.extras && errorData.extras.result_codes) {
+                    const { result_codes } = errorData.extras;
+                    console.error('Transaction result codes:', result_codes);
+
+                    if (result_codes.transaction === 'tx_insufficient_balance') {
+                        throw new Error('Insufficient balance to pay for transaction fees');
+                    } else if (result_codes.transaction === 'tx_bad_seq') {
+                        throw new Error('Invalid sequence number - account may have pending transactions');
+                    } else if (result_codes.operations) {
+                        const opErrors = result_codes.operations;
+                        if (opErrors.includes('op_invoke_host_function_insufficient_balance')) {
+                            throw new Error('Insufficient balance to execute contract function');
+                        } else if (opErrors.includes('op_invoke_host_function_entry_expired')) {
+                            throw new Error('Contract function entry has expired');
+                        } else if (opErrors.includes('op_invoke_host_function_resource_limit_exceeded')) {
+                            throw new Error('Contract execution exceeded resource limits');
+                        } else if (opErrors.includes('op_invoke_host_function_trapped')) {
+                            throw new Error('Contract function execution failed or panicked');
+                        } else {
+                            throw new Error(`Contract operation failed: ${opErrors.join(', ')}`);
+                        }
+                    }
+                }
+
+                // Handle RPC-specific errors
+                if (errorData.code) {
+                    switch (errorData.code) {
+                        case -32602:
+                            throw new Error('Invalid contract parameters or method name');
+                        case -32603:
+                            throw new Error('Internal server error during contract preparation');
+                        case -32001:
+                            throw new Error('Contract not found or invalid contract address');
+                        default:
+                            throw new Error(`RPC Error (${errorData.code}): ${errorData.message || 'Unknown error'}`);
+                    }
+                }
+
+                // Generic error message extraction
+                if (errorData.message) {
+                    throw new Error(`Contract preparation failed: ${errorData.message}`);
+                }
+            }
+
+            // Handle network or connection errors
+            if (error.code === 'ECONNREFUSED' || error.code === 'ENOTFOUND') {
+                throw new Error('Unable to connect to Stellar network - please check your internet connection');
+            }
+
+            // Handle timeout errors
+            if (error.code === 'ETIMEDOUT') {
+                throw new Error('Request timed out - Stellar network may be experiencing high load');
+            }
+
             console.error('Error creating contract transaction:', error);
             throw error;
         }
@@ -215,7 +275,7 @@ class StellarService {
 
             // We need any funded account for simulation
             // Using a well-known testnet account for simulation only
-            const dummyAccount = await this.rpc.getAccount('GDAT5HWTGIU4TSSZ4752OUC4SABDLTLZFRPZUJ3D6LKBNEPA7V2CIG54');
+            const dummyAccount = await this.server.getAccount('GCA3XIQAK2JKH7SDTVEEALP4HIMS4HULVMK3QCH5GQH4KLIWQW4CSCKF');
 
             // Convert parameters
             const scValParams = params.map(param => {
@@ -239,10 +299,11 @@ class StellarService {
                 .build();
 
             // Simulate only (no signing/sending)
-            const simulation = await this.rpc.simulateTransaction(tx);
+            const simulation = await this.server._simulateTransaction(tx);
+            console.log("🚀 ~ StellarService ~ readContract ~ simulation:", simulation)
 
-            if (simulation.result) {
-                const result = StellarSdk.scValToNative(simulation.result.retval);
+            if (simulation.results) {
+                const result = StellarSdk.scValToNative(simulation.results.retval);
                 return result;
             } else {
                 throw new Error('Simulation failed');
@@ -285,7 +346,7 @@ class StellarService {
             console.log('Setting up multisig for account:', masterKeypair.publicKey());
 
             // Load the master account
-            const masterAccount = await this.server.loadAccount(masterKeypair.publicKey());
+            const masterAccount = await this.rpc.loadAccount(masterKeypair.publicKey());
 
             // Check if account is already multisig
             if (masterAccount.signers.length > 1 && masterAccount.thresholds.med_threshold > 1) {
@@ -338,7 +399,7 @@ class StellarService {
             await new Promise(resolve => setTimeout(resolve, 3000));
 
             // Get updated account info
-            const updatedAccount = await this.server.loadAccount(masterKeypair.publicKey());
+            const updatedAccount = await this.rpc.loadAccount(masterKeypair.publicKey());
 
             return {
                 success: true,
@@ -358,7 +419,7 @@ class StellarService {
     // Create a multisig transaction (returns XDR for signing)
     async createMultisigTransaction(sourcePublicKey, operations) {
         try {
-            const sourceAccount = await this.server.loadAccount(sourcePublicKey);
+            const sourceAccount = await this.rpc.loadAccount(sourcePublicKey);
 
             let transactionBuilder = new StellarSdk.TransactionBuilder(sourceAccount, {
                 fee: StellarSdk.BASE_FEE,
@@ -454,7 +515,7 @@ class StellarService {
     // Get account signers and thresholds
     async getAccountSigners(publicKey) {
         try {
-            const account = await this.server.loadAccount(publicKey);
+            const account = await this.rpc.loadAccount(publicKey);
 
             return {
                 accountId: publicKey,

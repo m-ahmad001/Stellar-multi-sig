@@ -92,7 +92,7 @@ const StellarTransactions = () => {
       }
 
       // Create contract transaction
-      const transaction = await stellarService.createContractTransaction(
+      const transaction = await stellarService.invokeContract(
         publicKey,
         contractForm.contractAddress,
         contractForm.method,
@@ -100,8 +100,6 @@ const StellarTransactions = () => {
       );
 
       // Simulate first (optional but recommended)
-      const simulation = await stellarService.simulateContractTransaction(transaction);
-      console.log('Simulation result:', simulation);
 
       // Sign transaction with Freighter
       const signedTransaction = await signTransaction(transaction.toXDR());
