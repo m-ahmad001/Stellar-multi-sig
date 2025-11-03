@@ -237,94 +237,6 @@ app.post("/api/contract/build", async (req, res) => {
   }
 });
 
-// Build contract transfer transaction (specialized endpoint)
-app.post("/api/contract/transfer", async (req, res) => {
-  try {
-    const { sourceAccount, contractId, fromAddress, toAddress, amount } =
-      req.body;
-
-    // Validation
-    if (
-      !sourceAccount ||
-      !contractId ||
-      !fromAddress ||
-      !toAddress ||
-      !amount
-    ) {
-      return res.status(400).json({
-        error:
-          "Missing required fields: sourceAccount, contractId, fromAddress, toAddress, amount",
-      });
-    }
-
-    console.log("Building contract transfer:", {
-      sourceAccount,
-      contractId,
-      fromAddress,
-      toAddress,
-      amount,
-    });
-
-    // Use the generic contract build endpoint logic
-    const parameters = [
-      { type: "address", value: fromAddress },
-      { type: "address", value: toAddress },
-      { type: "i128", value: amount },
-    ];
-
-    // Load account from RPC
-    const account = await rpc.getAccount(sourceAccount);
-
-    // Create contract instance
-    const contract = new StellarSdk.Contract(contractId);
-
-    // Build contract call operation
-    const operation = contract.call(
-      "transfer",
-      StellarSdk.Address.fromString(fromAddress).toScVal(),
-      StellarSdk.Address.fromString(toAddress).toScVal(),
-      StellarSdk.nativeToScVal(BigInt(amount), { type: "i128" })
-    );
-
-    // Build transaction
-    const transaction = new StellarSdk.TransactionBuilder(account, {
-      fee: StellarSdk.BASE_FEE,
-      networkPassphrase: NETWORK_PASSPHRASE,
-    })
-      .addOperation(operation)
-      .setTimeout(3600)
-      .build();
-
-    // Prepare transaction
-
-    const preparedTx = await rpc.prepareTransaction(transaction);
-
-    const transactionXdr = preparedTx.toXDR();
-    const transactionHash = preparedTx.hash().toString("hex");
-
-    res.json({
-      success: true,
-      transactionXdr: transactionXdr,
-      transactionHash: transactionHash,
-      networkPassphrase: NETWORK_PASSPHRASE,
-      operation: {
-        type: "contract_transfer",
-        contractId: contractId,
-        fromAddress: fromAddress,
-        toAddress: toAddress,
-        amount: amount,
-      },
-    });
-  } catch (error) {
-    console.error("Error building contract transfer:", error);
-
-    res.status(500).json({
-      error: "Failed to build contract transfer",
-      message: error.message,
-    });
-  }
-});
-
 // Submit signed transaction
 app.post("/api/transaction/submit", async (req, res) => {
   try {
@@ -449,6 +361,8 @@ app.post("/api/transaction/submit", async (req, res) => {
     });
   }
 });
+
+
 
 // Error handling middleware
 app.use((error, req, res, next) => {
