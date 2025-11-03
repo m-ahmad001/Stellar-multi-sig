@@ -199,7 +199,7 @@ app.post("/api/contract/build", async (req, res) => {
       networkPassphrase: NETWORK_PASSPHRASE,
     })
       .addOperation(operation)
-      .setTimeout(300)
+      .setTimeout(3600)
       .build();
 
     console.log("Transaction built, preparing...");
@@ -292,7 +292,7 @@ app.post("/api/contract/transfer", async (req, res) => {
       networkPassphrase: NETWORK_PASSPHRASE,
     })
       .addOperation(operation)
-      .setTimeout(300)
+      .setTimeout(3600)
       .build();
 
     // Prepare transaction

@@ -17,7 +17,7 @@ const DynamicContractCall = () => {
     sourceAccount: "GCA3XIQAK2JKH7SDTVEEALP4HIMS4HULVMK3QCH5GQH4KLIWQW4CSCKF",
     contractAddress: "CDDMNSMJCJCQH5VGGENQ4KOIZFBPYW2OWICBMWSELLRHJW6N2P47IEIQ",
     method: "set_name",
-    params: '[{"type":"string","value":"ahmad_amir"}]',
+    params: '[{"type":"string","value":"One_Hour_Later"}]',
   });
 
   // Transaction state
