@@ -21,7 +21,7 @@ function App() {
       <main>
         <WalletConnect />
         <AccountInfo />
-        {/* <BackendMultiSigContract /> */}
+        <BackendMultiSigContract />
         <DynamicContractCall />
         {/* <PureMultiSigContract /> */}
         {/* <StellarTransactions /> */}

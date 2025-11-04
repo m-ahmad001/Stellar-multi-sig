@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFreighterWallet } from "../hooks/useFreighterWallet";
 import BackendService from "../services/backendService";
 import * as StellarSdk from "@stellar/stellar-sdk";
@@ -14,7 +14,7 @@ const DynamicContractCall = () => {
 
   // Contract invocation form
   const [contractForm, setContractForm] = useState({
-    sourceAccount: "GCA3XIQAK2JKH7SDTVEEALP4HIMS4HULVMK3QCH5GQH4KLIWQW4CSCKF",
+    sourceAccount: "GBIWYETBQUVV2VMARCWOO52GWJPV6JM3IPCWLO6NBZHTJRAOY7KOEUFK",
     contractAddress: "CDDMNSMJCJCQH5VGGENQ4KOIZFBPYW2OWICBMWSELLRHJW6N2P47IEIQ",
     method: "set_name",
     params: '[{"type":"string","value":"One_Hour_Later"}]',
