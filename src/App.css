@@ -677,6 +677,95 @@ lti-Signature Manager Styles */
   color: #6f42c1;
 }
 
+/* Wallet Connection Status in Multi-Sig */
+.wallet-status {
+  background: #e7f3ff;
+  border: 1px solid #b3d9ff;
+  border-radius: 6px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.wallet-status h3 {
+  color: #0056b3;
+  margin-bottom: 1rem;
+}
+
+.wallet-status .connected {
+  color: #28a745;
+  font-weight: 500;
+}
+
+.wallet-status .connected p {
+  margin: 0;
+  font-family: "Courier New", monospace;
+}
+
+.wallet-status .disconnected {
+  color: #dc3545;
+  font-weight: 500;
+}
+
+.wallet-status .disconnected p {
+  margin: 0.5rem 0;
+}
+
+.wallet-status .disconnected small {
+  color: #6c757d;
+  font-style: italic;
+}
+
+.use-connected-btn {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  transition: background-color 0.3s;
+}
+
+.use-connected-btn:hover {
+  background: #218838;
+}
+
+.wallet-signer-info {
+  background: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 6px;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+.wallet-signer-info p {
+  margin: 0.25rem 0;
+  color: #856404;
+  font-weight: 500;
+}
+
+.wallet-signer-info strong {
+  color: #856404;
+}
+
+.wallet-signer-info small {
+  color: #856404;
+  font-style: italic;
+}
+
+.signature-warning {
+  background: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 4px;
+  padding: 0.75rem;
+  margin-top: 1rem;
+  color: #856404;
+  font-weight: 500;
+  text-align: center;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .threshold-inputs {

@@ -21,12 +21,12 @@ function App() {
       <main>
         <WalletConnect />
         <AccountInfo />
-        <BackendMultiSigContract />
-        <DynamicContractCall />
+        {/* <BackendMultiSigContract /> */}
+        {/* <DynamicContractCall /> */}
         {/* <PureMultiSigContract /> */}
         {/* <StellarTransactions /> */}
         {/* <ModernContractExample /> */}
-        {/* <MultiSigManager /> */}
+        <MultiSigManager />
       </main>
     </div>
   );

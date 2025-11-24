@@ -152,9 +152,9 @@ class StellarService {
           return StellarSdk.Address.fromString(param).toScVal();
         }
         if (typeof param === "bigint" || typeof param === "number") {
-          return nativeToScVal(BigInt(param), { type: "i128" });
+          return StellarSdk.nativeToScVal(BigInt(param), { type: "i128" });
         }
-        return nativeToScVal(param);
+        return StellarSdk.nativeToScVal(param);
       });
       console.log("🚀 ~ StellarService  ~ scValParams:", scValParams);
 
@@ -394,7 +394,109 @@ class StellarService {
     return (parseInt(stroopsAmount) / 10000000).toString();
   }
 
-  // Multi-signature account setup
+  // Multi-signature account setup with Freighter wallet
+  async setupMultisigWithWallet(
+    masterPublicKey,
+    signerPublicKeys,
+    thresholds = { low: 3, med: 3, high: 3 },
+    connectedPublicKey
+  ) {
+    try {
+      // Verify the connected account matches the master account
+      if (masterPublicKey !== connectedPublicKey) {
+        throw new Error(
+          "Connected wallet account does not match master account"
+        );
+      }
+
+      console.log("Setting up multisig for account:", masterPublicKey);
+
+      // Load the master account
+      const masterAccount = await this.rpc.loadAccount(masterPublicKey);
+
+      // Check if account is already multisig
+      if (
+        masterAccount.signers.length > 1 &&
+        masterAccount.thresholds.med_threshold > 1
+      ) {
+        return {
+          success: true,
+          message: "Account is already configured as multisig",
+          accountId: masterPublicKey,
+          signers: masterAccount.signers,
+          thresholds: masterAccount.thresholds,
+        };
+      }
+
+      // Build transaction to add all signers and set thresholds
+      let transactionBuilder = new StellarSdk.TransactionBuilder(
+        masterAccount,
+        {
+          fee: StellarSdk.BASE_FEE,
+          networkPassphrase: this.networkPassphrase,
+        }
+      );
+
+      // Add all signers with weight 1
+      signerPublicKeys.forEach((signerPublicKey) => {
+        transactionBuilder = transactionBuilder.addOperation(
+          StellarSdk.Operation.setOptions({
+            signer: {
+              ed25519PublicKey: signerPublicKey,
+              weight: 1,
+            },
+          })
+        );
+      });
+
+      // Set thresholds and master weight
+      transactionBuilder = transactionBuilder.addOperation(
+        StellarSdk.Operation.setOptions({
+          lowThreshold: thresholds.low,
+          medThreshold: thresholds.med,
+          highThreshold: thresholds.high,
+          masterWeight: 1,
+        })
+      );
+
+      const transaction = transactionBuilder.setTimeout(180).build();
+
+      // Sign with Freighter wallet
+      const signedTransaction = await signTransaction(transaction.toXDR(), {
+        networkPassphrase: this.networkPassphrase,
+        address: connectedPublicKey,
+      });
+
+      // Create transaction from signed XDR
+      const finalTransaction = StellarSdk.TransactionBuilder.fromXDR(
+        signedTransaction.signedTxXdr,
+        this.networkPassphrase
+      );
+
+      // Submit transaction
+      const result = await this.rpc.submitTransaction(finalTransaction);
+
+      // Wait for propagation
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+
+      // Get updated account info
+      const updatedAccount = await this.rpc.loadAccount(masterPublicKey);
+
+      return {
+        success: true,
+        message: "Multisig account setup successful",
+        transactionHash: result.hash,
+        accountId: masterPublicKey,
+        signers: updatedAccount.signers,
+        thresholds: updatedAccount.thresholds,
+      };
+    } catch (error) {
+      console.error("Error setting up multisig:", error);
+      throw error;
+    }
+  }
+
+  // Original Multi-signature account setup (deprecated - kept for backward compatibility)
   async setupMultisig(
     masterSecret,
     signerSecrets,
@@ -525,7 +627,55 @@ class StellarService {
     }
   }
 
-  // Add a signature to an existing transaction
+  // Add a signature to an existing transaction using Freighter wallet
+  async addSignatureToTransactionWithWallet(transactionXdr, publicKey) {
+    try {
+      console.log("Adding signature for:", publicKey);
+      console.log("Transaction XDR length:", transactionXdr.length);
+
+      const signature = await signTransaction(transactionXdr, {
+        networkPassphrase: this.networkPassphrase,
+        address: publicKey,
+      });
+      console.log("Freighter signature result:", signature);
+
+      const transaction = StellarSdk.TransactionBuilder.fromXDR(
+        signature.signedTxXdr,
+        this.networkPassphrase
+      );
+
+      console.log("Transaction after signing:");
+      console.log("- Source account:", transaction.source);
+      console.log("- Signatures count:", transaction.signatures.length);
+      console.log("- Network passphrase:", this.networkPassphrase);
+
+      return {
+        signedXdr: transaction.toXDR(),
+        signerPublicKey: publicKey,
+        signatures: transaction.signatures.length,
+        signature: signature.signedTxXdr.toString("base64"),
+      };
+    } catch (error) {
+      console.error("Error adding signature:", error);
+
+      // Provide more helpful error messages for common Freighter issues
+      if (error.message.includes("User declined")) {
+        throw new Error(
+          "User declined to sign the transaction in Freighter wallet"
+        );
+      } else if (error.message.includes("Wallet is locked")) {
+        throw new Error(
+          "Freighter wallet is locked - please unlock it and try again"
+        );
+      } else if (error.message.includes("Account not found")) {
+        throw new Error(
+          "The connected account is not authorized to sign this transaction"
+        );
+      }
+
+      throw error;
+    }
+  } // Add a signature to an existing transaction (deprecated - kept for backward compatibility)
   async addSignatureToTransaction(transactionXdr, publicKey) {
     try {
       console.log("transactionXdr", transactionXdr);
@@ -560,6 +710,40 @@ class StellarService {
     }
   }
 
+  // Validate transaction signatures before submission
+  async validateTransactionSignatures(signedTransactionXdr, sourcePublicKey) {
+    try {
+      const transaction = StellarSdk.TransactionBuilder.fromXDR(
+        signedTransactionXdr,
+        this.networkPassphrase
+      );
+
+      const sourceAccount = await this.rpc.loadAccount(sourcePublicKey);
+      const currentSignatures = transaction.signatures.length;
+      const requiredThreshold = sourceAccount.thresholds.med_threshold;
+
+      // Calculate total signature weight
+      let totalWeight = 0;
+      // Note: In a full implementation, you would verify the actual signers
+      // against the account's authorized signers list
+
+      return {
+        isValid: currentSignatures >= requiredThreshold,
+        currentSignatures,
+        requiredThreshold,
+        totalWeight,
+        signers: sourceAccount.signers,
+        message:
+          currentSignatures >= requiredThreshold
+            ? "Transaction has sufficient signatures"
+            : `Need at least ${requiredThreshold} signatures, currently have ${currentSignatures}`,
+      };
+    } catch (error) {
+      console.error("Error validating transaction signatures:", error);
+      throw error;
+    }
+  }
+
   // Submit a multisig transaction
   async submitMultisigTransaction(signedTransactionXdr) {
     try {
@@ -568,7 +752,14 @@ class StellarService {
         this.networkPassphrase
       );
 
-      const result = await this.server.submitTransaction(transaction);
+      // Log transaction details for debugging
+      console.log(
+        "Submitting transaction with signatures:",
+        transaction.signatures.length
+      );
+      console.log("Transaction source:", transaction.source);
+
+      const result = await this.rpc.submitTransaction(transaction);
 
       return {
         success: true,
@@ -579,16 +770,34 @@ class StellarService {
     } catch (error) {
       console.error("Error submitting multisig transaction:", error);
 
+      // Log the full error for debugging
+      if (error.response && error.response.data) {
+        console.log(
+          "Full error response:",
+          JSON.stringify(error.response.data, null, 2)
+        );
+      }
+
       // Enhanced error handling for multisig failures
       if (error.response && error.response.data && error.response.data.extras) {
         const { result_codes } = error.response.data.extras;
 
         if (result_codes.transaction === "tx_bad_auth") {
+          // Get more specific information about the authentication failure
+          const transaction = StellarSdk.TransactionBuilder.fromXDR(
+            signedTransactionXdr,
+            this.networkPassphrase
+          );
+
           throw new Error(
-            "Insufficient signatures or invalid signature weight"
+            `Insufficient signatures: Transaction has ${transaction.signatures.length} signature(s) but may need more weight or different signers. Check that all required signers have signed and the signature weight meets the account thresholds.`
           );
         } else if (result_codes.transaction === "tx_bad_auth_extra") {
           throw new Error("Too many signatures or duplicate signatures");
+        } else if (result_codes.transaction === "tx_bad_seq") {
+          throw new Error(
+            "Invalid sequence number - the account may have other pending transactions"
+          );
         }
       }
 
@@ -620,6 +829,31 @@ class StellarService {
     } catch (error) {
       console.error("Error getting account signers:", error);
       throw error;
+    }
+  }
+
+  // Calculate required signatures for a transaction type
+  getRequiredSignatures(accountInfo, operationType = "payment") {
+    if (!accountInfo || !accountInfo.thresholds) {
+      return 1; // Default fallback
+    }
+
+    // Most operations (payment, createAccount, etc.) use medium threshold
+    // High threshold is typically for account management operations
+    // Low threshold is for trust lines and other low-risk operations
+    switch (operationType) {
+      case "payment":
+      case "createAccount":
+      case "pathPayment":
+        return accountInfo.thresholds.medium;
+      case "setOptions":
+      case "manageSigner":
+        return accountInfo.thresholds.high;
+      case "changeTrust":
+      case "allowTrust":
+        return accountInfo.thresholds.low;
+      default:
+        return accountInfo.thresholds.medium;
     }
   }
 
