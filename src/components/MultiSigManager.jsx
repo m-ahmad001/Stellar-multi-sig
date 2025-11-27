@@ -446,7 +446,7 @@ View on Stellar Expert: https://stellar.expert/explorer/testnet/tx/${submitResul
       </div>
 
       {/* Transaction Creation */}
-      <div className="multisig-form">
+      {/* <div className="multisig-form">
         <h3>2️⃣ Create Multi-Sig Transaction</h3>
 
         <div className="account-check">
@@ -585,10 +585,10 @@ View on Stellar Expert: https://stellar.expert/explorer/testnet/tx/${submitResul
             {isLoading ? "Creating..." : "Create Transaction"}
           </button>
         </form>
-      </div>
+      </div> */}
 
       {/* Transaction Signing */}
-      <div className="multisig-form">
+      {/* <div className="multisig-form">
         <h3>3️⃣ Sign Transaction</h3>
         <form onSubmit={signTransaction}>
           <div className="form-group">
@@ -658,9 +658,9 @@ View on Stellar Expert: https://stellar.expert/explorer/testnet/tx/${submitResul
               )}
           </div>
         </form>
-      </div>
+      </div> */}
 
-      <div className="multisig-info">
+      {/* <div className="multisig-info">
         <h4>Multi-Signature Workflow with Freighter:</h4>
         <ol>
           <li>
@@ -695,7 +695,7 @@ View on Stellar Expert: https://stellar.expert/explorer/testnet/tx/${submitResul
           <li>📋 Audit trail of all signers</li>
           <li>⚖️ Customizable signature thresholds</li>
         </ul>
-      </div>
+      </div> */}
     </div>
   );
 };
