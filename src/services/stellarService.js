@@ -7,9 +7,9 @@ class StellarService {
     this.networkType = networkType;
 
     if (networkType === "mainnet" || networkType === "PUBLIC") {
-      this.server = new Server("https://soroban-testnet.stellar.org");
+      this.server = new Server("https://mainnet.sorobanrpc.com");
       this.rpc = new StellarSdk.Horizon.Server(
-        "https://horizon-testnet.stellar.org"
+        "https://horizon.stellar.org"
       );
       this.networkPassphrase = StellarSdk.Networks.PUBLIC;
       this.networkName = "PUBLIC";
