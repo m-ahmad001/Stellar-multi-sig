@@ -316,7 +316,7 @@ View on Stellar Expert: https://stellar.expert/explorer/testnet/tx/${submitResul
       </div>
 
       {/* Keypair Generator */}
-      <KeypairGenerator />
+      {/* <KeypairGenerator /> */}
 
       {error && (
         <div className="error-message">

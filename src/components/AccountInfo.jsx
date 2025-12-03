@@ -4,7 +4,7 @@ import StellarService from '../services/stellarService';
 
 const AccountInfo = () => {
   const { isWalletConnected, publicKey, network } = useFreighterWallet();
-  const [stellarService] = useState(() => new StellarService('testnet'));
+  const [stellarService] = useState(() => new StellarService('mainnet'));
   const [accountData, setAccountData] = useState(null);
   const [balances, setBalances] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
