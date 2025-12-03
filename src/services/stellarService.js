@@ -474,7 +474,7 @@ class StellarService {
       );
 
       // Submit transaction
-      const result = await this.rpc.submitTransaction(finalTransaction);
+      const result = await this.server.sendTransaction(finalTransaction);
 
       // Wait for propagation
       await new Promise((resolve) => setTimeout(resolve, 3000));
