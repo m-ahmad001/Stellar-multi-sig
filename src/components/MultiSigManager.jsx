@@ -6,7 +6,7 @@ import * as StellarSdk from "@stellar/stellar-sdk";
 
 const MultiSigManager = () => {
   const { publicKey, isWalletConnected } = useFreighterWallet();
-  const [stellarService] = useState(() => new StellarService("mainnet"));
+  const [stellarService] = useState(() => new StellarService("testnet"));
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState("");
   const [error, setError] = useState("");
